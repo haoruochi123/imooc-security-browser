@@ -1,7 +1,9 @@
 package com.imooc.security.browser;
 
-import javax.sql.DataSource;
-
+import com.imooc.security.browser.handler.HrcAthenticationFailureHandler;
+import com.imooc.security.browser.handler.HrcAuthenticationSuccessHandler;
+import com.imooc.security.core.properties.SecurityProperties;
+import com.imooc.security.core.validate.code.ValidateCodeFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import com.imooc.security.browser.handler.HrcAthenticationFailureHandler;
-import com.imooc.security.browser.handler.HrcAuthenticationSuccessHandler;
-import com.imooc.security.core.properties.SecurityProperties;
-import com.imooc.security.core.validate.code.ValidateCodeFilter;
+import javax.sql.DataSource;
 
 /**
  * @ClassName: BrowserSecurityConfig
@@ -83,7 +82,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 				.rememberMe().tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(securityProperties.getBrowser().getTokenValiditySeconds())
 				.userDetailsService(userDetailsService).and().authorizeRequests()
-				.antMatchers("/login/**", "/authentication/form", "/autentication/require", "/code/image",
+				.antMatchers("/login/**", "/authentication/form", "/autentication/require", "/code/image","/exception","/post",
 						securityProperties.getBrowser().getLoginPage())
 				.permitAll().anyRequest().authenticated().and().csrf().disable();
 		logger.info("security配置完成");

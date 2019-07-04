@@ -82,7 +82,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 				.rememberMe().tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(securityProperties.getBrowser().getTokenValiditySeconds())
 				.userDetailsService(userDetailsService).and().authorizeRequests()
-				.antMatchers("/login/**", "/authentication/form", "/autentication/require", "/code/image","/exception","/post",
+				.antMatchers("/login/**", "/authentication/form", "/autentication/require", "/code/image","/exception","/post","/user",
 						securityProperties.getBrowser().getLoginPage())
 				.permitAll().anyRequest().authenticated().and().csrf().disable();
 		logger.info("security配置完成");

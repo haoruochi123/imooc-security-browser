@@ -87,15 +87,30 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class).formLogin()
-                // .loginPage("/autentication/require")
-                .loginPage(securityProperties.getBrowser().getLoginPage()).loginProcessingUrl("/authentication/form")
-                .successHandler(hrcAuthenticationSuccessHandler).failureHandler(hrcAthenticationFailureHandler).and()
-                .rememberMe().tokenRepository(persistentTokenRepository())
+//              .loginPage("/autentication/require")
+                .loginPage(securityProperties.getBrowser().getLoginPage())
+                .loginProcessingUrl("/authentication/form")
+                .successHandler(hrcAuthenticationSuccessHandler)
+                .failureHandler(hrcAthenticationFailureHandler)
+                .and()
+                .rememberMe().
+                tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(securityProperties.getBrowser().getTokenValiditySeconds())
-                .userDetailsService(userDetailsService).and().authorizeRequests()
-                .antMatchers("/login/**", "/authentication/form", "/autentication/require", "/code/**", "/exception", "/post", "/user",
+                .userDetailsService(userDetailsService)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/login/**",
+                        "/authentication/form",
+                        "/autentication/require",
+                        "/code/**",
+                        "/exception",
+                        "/post",
+                        "/user",
                         securityProperties.getBrowser().getLoginPage())
-                .permitAll().anyRequest().authenticated().and().csrf().disable()
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and().csrf().disable()
                 .apply(smsCodeAuthenticationSecurityConfig);
         logger.info("security配置完成");
     }

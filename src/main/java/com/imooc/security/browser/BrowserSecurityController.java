@@ -1,10 +1,7 @@
 package com.imooc.security.browser;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.imooc.security.browser.support.SimpleResponse;
+import com.imooc.security.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.imooc.security.browser.support.SimpleResponse;
-import com.imooc.security.core.properties.SecurityProperties;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @ClassName: BrowserSecurityController  
@@ -56,4 +54,7 @@ public class BrowserSecurityController {
 		return new SimpleResponse("访问需要身份认证，请引导用户到登录页面！");
 		
 	}
+
+
+
 }

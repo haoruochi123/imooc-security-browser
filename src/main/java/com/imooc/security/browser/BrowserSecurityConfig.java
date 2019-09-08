@@ -6,6 +6,7 @@ import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.code.ValidateCodeFilter;
 import com.imooc.security.core.validate.sms.SmsCodeAuthenticationSecurityConfig;
 import com.imooc.security.core.validate.sms.SmsCodeFilter;
+import com.sun.org.apache.xpath.internal.operations.And;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -52,6 +54,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Autowired
+    private SpringSocialConfigurer springSocialConfigurer;
 
     @Bean
     public RedirectStrategy redirectStrategy() {
@@ -106,12 +111,17 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/exception",
                         "/post",
                         "/user",
+                        "/user/regist",
+                        securityProperties.getBrowser().getSignUpUrl(),
                         securityProperties.getBrowser().getLoginPage())
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().csrf().disable()
-                .apply(smsCodeAuthenticationSecurityConfig);
+                .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                .apply(springSocialConfigurer);
+
         logger.info("security配置完成");
     }
     /*
